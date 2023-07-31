@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>jmeter-maven-integration-demo</artifactId>
+    <groupId>com.lazerycode.jmeter</groupId>
+    <version>01-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <description>
+        Run a JMeter remote server.
+        Invoke with "mvn clean verify"
+    </description>
+
+    <properties>           
+        <hostname>10.245.70.159</hostname>
+		<BUILD_TAG>${project.version}</BUILD_TAG>
+		<jmeter-maven-plugin.version>3.8.0</jmeter-maven-plugin.version>
+    </properties>
+	
+    <build>
+        <plugins>
+             <!-- execute JMeter test -->
+            <plugin>
+                 <groupId>${project.groupId}</groupId>
+                 <artifactId>jmeter-maven-plugin</artifactId>
+                 <version>${jmeter-maven-plugin.version}</version>
+                 <executions>
+				 <!-- Generate JMeter configuration -->
+					<execution>
+						<id>configuration</id>
+						<goals>
+							<goal>configure</goal>
+						</goals>
+					</execution> 
+					<!-- Start JMeter server -->
+                    <execution>
+                         <id>start-jmeter-server</id>
+                         <goals>
+                             <goal>remote-server</goal>
+                         </goals>
+						<configuration>
+							<runInBackground>false</runInBackground>
+						</configuration>
+                    </execution>					
+				</executions>
+				
+				<configuration>
+					<exportedRmiHostname>${hostname}</exportedRmiHostname>
+					<serverPort>1099</serverPort>											
+				</configuration>				
+
+            </plugin>
+        </plugins>
+    </build>
+	
+
+</project>
